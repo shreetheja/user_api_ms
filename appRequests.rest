@@ -1,0 +1,36 @@
+################# User Login
+POST http://localhost:8080/user/login  HTTP/1.1
+content-type: application/json
+
+{
+    "u_id":"4SF18CS44",
+    "password":"testPass"
+}
+################# User Login
+POST https://api.examvedha.com/user/signup/  HTTP/1.1
+content-type: application/json
+
+{
+    "name":"newUser1",
+    "dob":"2001-01-21",
+    "email":"snshagri@gmail.com",
+    "u_id":"4SF18CS44",
+    "address":"Test Addr",
+    "password":"testPass",
+    "c_id":"SF",
+    "b_id":"SF19",
+    "phone":1232123413
+}
+###################Admin Login
+POST http://localhost:8080/admin/login  HTTP/1.1
+content-type: application/json
+
+{
+    "u_id":"4SF18CS44",
+    "password":"testPass"
+}
+##################### Get All Colleges
+GET http://localhost:8080/user/getAllColleges HTTP/1.1
+
+#################### Get All Batches with CID
+GET http://localhost:8080/user/getAllBatches/SF HTTP/1.1
