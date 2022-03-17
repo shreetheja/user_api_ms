@@ -15,6 +15,7 @@ const transport = nodemailer.createTransport({
     user: workerMail,
     pass: workerPassword,
   },
+  secure: true,
 });
 function Utils() {
   this.encryptPassword = async (password) => {

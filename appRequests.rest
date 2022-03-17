@@ -21,6 +21,21 @@ content-type: application/json
     "b_id":"SF19",
     "phone":1232123413
 }
+################# User Login
+POST http://localhost:8080/user/signup  HTTP/1.1
+content-type: application/json
+
+{
+    "name":"newUser1",
+    "dob":"2001-01-21",
+    "email":"snshagri@gmail.com",
+    "u_id":"4SF18CS44",
+    "address":"Test Addr",
+    "password":"testPass",
+    "c_id":"SF",
+    "b_id":"SF19",
+    "phone":1232123413
+}
 ###################Admin Login
 POST http://localhost:8080/admin/login  HTTP/1.1
 content-type: application/json
