@@ -123,7 +123,7 @@ router.post('/signup', async (req, res) => {
     confirmationCode,
   };
   const dbEmailResp = await db.isUserMailExists(email);
-  const isEmailValid = await new Utils().validateMail(email);
+  const isEmailValid = true;
   if (dbEmailResp.error) {
     const responseObj = new Api500Error(
       'Internal Server Error',
