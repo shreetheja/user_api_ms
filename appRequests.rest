@@ -4,7 +4,15 @@ content-type: application/json
 
 {
     "u_id":"4SF18CS144",
-    "password":"dww"
+    "password":"dw"
+}
+################# User Login
+POST https://api.examvedha.com/user/login  HTTP/1.1
+content-type: application/json
+
+{
+    "u_id":"4SF18CS144",
+    "password":"dw"
 }
 ################# User Login
 POST https://api.examvedha.com/user/signup/  HTTP/1.1
@@ -52,3 +60,5 @@ GET http://localhost:8080/user/getAllBatches/SF HTTP/1.1
 
 ################### GET user details
 GET http://localhost:8080/user/getUserDetails?u_id=4sf18cs144&password=dw
+################### GET user details
+GET http://api.examvedha.com/user/getUserDetails?u_id=4sf18cs144&password=dw
