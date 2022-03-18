@@ -5,15 +5,26 @@ const UserDb = require('../database/user_database');
 const {
   Api500Error, Api200Success, Api401Error, Api400Error,
 } = require('../error_models/apiErrors');
-const Utils = require('../utils/utils');
+const UtilModule = require('../utils/utils');
+
+const utils = new UtilModule();
 
 const router = express.Router();
 const logger = log.getNormalLogger();
 const db = new UserDb();
-// /user/login
-router.post('/login', async (req, res) => {
-  const { u_id: uId, password } = req.body;
-  logger.debug(`USER:${req.body.toString()} user trying to login request`);
+
+async function verifyUser(uId, password) {
+  try {
+    // eslint-disable-next-line no-param-reassign
+    uId = uId.toUpperCase();
+  } catch (error) {
+    const responseObj = new Api400Error(
+      'USER: bad request missing params ',
+      `USER: bad request missing params ${error}`,
+    );
+    return responseObj;
+  }
+  logger.debug('USER: user trying to login request');
   const dbRes = await db.getUserDetails(uId);
 
   if (dbRes.error) {
@@ -21,8 +32,8 @@ router.post('/login', async (req, res) => {
       'Internal Server Error',
       `Database Error was Found in route /user/login: ${dbRes.error}`,
     );
-    res.status(500).send(responseObj.toStringifiedJson()).end();
-  } else if (dbRes.rows.length > 0) {
+    return responseObj;
+  } if (dbRes.rows.length > 0) {
     const data = dbRes.rows[0];
 
     // is Verified
@@ -30,36 +41,38 @@ router.post('/login', async (req, res) => {
       const responseObj = new Api401Error(
         `USER:${uId} Login Unsuccessful please verify mail id: ${data.email} `,
         `USER:${uId} Login UnSucceussful with DB Response :${dbRes}`,
-        true,
       );
-      res.status(401).send(responseObj.toStringifiedJson()).end();
-      return;
+      return responseObj;
     }
 
     // eslint-disable-next-line max-len
-    const isSamePassCode = await new Utils().compareHashCrypt(data.password, password);
+    const isSamePassCode = await utils.compareHashCrypt(data.password, password);
     if (isSamePassCode) {
       const responseObj = new Api200Success(
         `USER:${uId} Login Successful `,
         `USER:${uId} Login Succeussful with DB Response :${dbRes}`,
         true,
       );
-      res.status(200).send(responseObj.toStringifiedJson()).end();
-    } else {
-      const responseObj = new Api401Error(
-        `USER:${uId} Login Unsuccessful please check credentials `,
-        `USER:${uId} Login Succeussful with DB Response :${dbRes}`,
-        true,
-      );
-      res.status(401).send(responseObj.toStringifiedJson()).end();
+      return responseObj;
     }
-  } else {
-    const responseObj = new Api500Error(
-      'Internal Server Error',
-      `Database Error was Found in route /user/login: ${dbRes.error}`,
+    const responseObj = new Api401Error(
+      `USER:${uId} Login Unsuccessful please check credentials `,
+      `USER:${uId} Login Succeussful with DB Response :${dbRes}`,
     );
-    res.status(500).send(responseObj.toStringifiedJson()).end();
+    return responseObj;
   }
+  const responseObj = new Api500Error(
+    'Internal Server Error',
+    `Database Error was Found in route /user/login: ${dbRes.error}`,
+  );
+  return responseObj;
+}
+
+// /user/login
+router.post('/login', async (req, res) => {
+  // eslint-disable-next-line no-use-before-define
+  const response = await verifyUser(req.body.u_id, req.body.password);
+  res.status(response.statusCode).send(response.toStringifiedJson()).end();
 });
 
 router.get('/getAllColleges', async (req, res) => {
@@ -107,7 +120,7 @@ router.post('/signup', async (req, res) => {
     name, dob, email, address, c_id: cId, b_id: bId, phone,
   } = req.body;
   const uId = req.body.u_id.toUpperCase();
-  const password = await new Utils().encryptPassword(req.body.password.toString());
+  const password = await utils.encryptPassword(req.body.password.toString());
   const confirmationCode = uuidv4();
   const data = {
     name,
@@ -181,7 +194,7 @@ router.post('/signup', async (req, res) => {
     null,
   );
   // eslint-disable-next-line max-len
-  new Utils().nodeMailCreateConfirmationMail(data.name, data.confirmationCode, data.email);
+  utils.nodeMailCreateConfirmationMail(data.name, data.confirmationCode, data.email);
   res.status(200).send(responseObj.toStringifiedJson()).end();
 });
 
@@ -268,6 +281,52 @@ router.get('/verifyEmail/:email/:confirmationCode', async (req, res) => {
     `verified user ${confirmationCode}`,
   );
   res.status(200).send(responseObj.toStringifiedJson()).end();
+});
+
+router.get('/getUserDetails', async (req, res) => {
+  try {
+    const { u_id: uId, password } = req.query;
+    // eslint-disable-next-line no-use-before-define
+    const verifyUserData = await verifyUser(uId, password);
+    if (verifyUserData.statusCode === 200) {
+      const userDetails = await db.getUserDetails(uId.toUpperCase());
+      if (userDetails.error) {
+        const responseObj = new Api500Error(
+          'internal server error',
+          `db error in route /getUserDetails/:uId/:password : ${userDetails.error} `,
+        );
+        res.status(500).send(responseObj.toStringifiedJson()).end();
+        return;
+      }
+      const data = userDetails.rows[0];
+      const userDetailsToSend = {
+        u_id: data.u_id,
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        created_on: data.created_on,
+        address: data.address,
+        college: data.college,
+        dob: data.dob,
+        emailStatus: data.emailStatus,
+        confirmationCode: data.confirmationCode,
+      };
+      const responseObj = new Api200Success(
+        'data fetched successful',
+        'data fetched successful',
+        userDetailsToSend,
+      );
+      res.status(200).send(responseObj.toStringifiedJson()).end();
+    } else {
+      res.status(verifyUserData.statusCode).send(verifyUserData.toStringifiedJson());
+    }
+  } catch (error) {
+    const responseObj = new Api500Error(
+      'internal server error',
+      `internal server error ${error.toString()}`,
+    );
+    res.status(500).send(responseObj.toStringifiedJson());
+  }
 });
 
 module.exports = router;
