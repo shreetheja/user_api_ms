@@ -59,9 +59,9 @@ class Controller {
       );
       return responseObj;
     }
-    const responseObj = new Api500Error(
-      'Internal Server Error',
-      `Database Error was Found in route /user/login: ${dbRes.error}`,
+    const responseObj = new Api401Error(
+      'Either User name or password is not right !',
+      'User name not present',
     );
     return responseObj;
   }

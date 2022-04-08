@@ -7,7 +7,7 @@ content-type: application/json
     "password":"dw"
 }
 ################# User Login
-POST https://api.examvedha.com/user/login  HTTP/1.1
+POST https://usersApi.examvedha.com/user/login  HTTP/1.1
 content-type: application/json
 
 {
