@@ -15,7 +15,7 @@ content-type: application/json
     "password":"dw"
 }
 ################# User Login
-POST https://api.examvedha.com/user/signup/  HTTP/1.1
+POST https://usersapi.examvedha.com/user/signup/  HTTP/1.1
 content-type: application/json
 
 {
@@ -34,16 +34,17 @@ POST http://localhost:8080/user/signup  HTTP/1.1
 content-type: application/json
 
 {
-    "name":"newUser1",
-    "dob":"2001-01-21",
-    "email":"snshagri@gmail.com",
-    "u_id":"4SF18CS44",
-    "address":"Test Addr",
+    "name":"GAURAV RAO J ",
+    "dob":"2001-12-29",
+    "email":"gauravraoj29@gmail.com",
+    "u_id":"4SF20CS186",
+    "address":"Door no:2-45/23, indire house, hemavathi nagara, b",
     "password":"testPass",
     "c_id":"SF",
-    "b_id":"SF19",
-    "phone":1232123413
+    "b_id":"CS20B",
+    "phone":9449488269
 }
+
 ###################Admin Login
 POST http://localhost:8080/admin/login  HTTP/1.1
 content-type: application/json

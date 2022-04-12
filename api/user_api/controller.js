@@ -126,7 +126,7 @@ class Controller {
     const data = {
       name,
       dob,
-      email,
+      email: email.toString().trim(),
       phone,
       uId,
       address,
@@ -136,7 +136,7 @@ class Controller {
       status: 'pending',
       confirmationCode,
     };
-    const dbEmailResp = await db.isUserMailExists(email);
+    const dbEmailResp = await db.isUserMailExists(data.email);
     const isEmailValid = true;
     if (dbEmailResp.error) {
       const responseObj = new Api500Error(
