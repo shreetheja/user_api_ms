@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const emailValidator = require('deep-email-validator');
+const ejs = require('ejs');
 const log = require('../log/index');
 
 const logger = log.getNormalLogger();
@@ -39,17 +40,21 @@ function Utils() {
   };
   this.nodeMailCreateConfirmationMail = async (name, confirmationCode, to) => {
     const host = process.env.HOST;
-    transport.sendMail({
-      from: workerMail,
-      to,
-      subject: 'Please confirm your account',
-      html: `<h1>Email Confirmation</h1>
-          <h2>Hello ${name}</h2>
-          <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-          <a href=https://${host}/user/verifyEmail/${to}/${confirmationCode}> Click here</a>
-          </div>`,
-    }).catch((err) => logger.error(err));
+    const link = `https://${host.toString()}/user/verifyEmail/${to.toString()}/${confirmationCode.toString()}`;
+    ejs.renderFile(`${__dirname}/mail.ejs`, { user_firstname: name, confirm_link: link }, (err, data) => {
+      if (err) {
+        logger.error(err);
+      } else {
+        transport.sendMail({
+          from: workerMail,
+          to,
+          subject: 'Please confirm your account',
+          html: data,
+        }).catch((error) => logger.error(error));
+      }
+    });
   };
+
   // eslint-disable-next-line no-return-await
   this.validateMail = async (email) => {
     const validation = await emailValidator.validate(email);
