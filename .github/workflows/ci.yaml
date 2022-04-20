@@ -15,10 +15,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
 
     steps:
-    
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.1.1
+
       - name: Checkout the code
         uses: actions/checkout@master
         
