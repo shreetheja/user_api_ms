@@ -35,7 +35,7 @@ jobs:
         run: npm install eslint-plugin-import
 
       - name: npm audit action
-        uses: oke-py/npm-audit-action@v2.1.0
+        run: npm audit
       
       - name: Run lint
         run: npm run lint
