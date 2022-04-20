@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+
+    steps:
+    
+      - name: Checkout the code
+        uses: actions/checkout@master
+        
+      - name: install the dependencies
+        run: npm install
+      
+      - name: install eslint
+        run: npm install eslint
+        
+      - name: install eslint airbnb dependency
+        run: npm install eslint-config-airbnb-base
+
+      - name: install eslint plugin import 
+        run: npm install eslint-plugin-import
+
+      - name: npm audit action
+        uses: oke-py/npm-audit-action@v2.1.0
+      
+      - name: Run lint
+        run: npm run lint
+        
