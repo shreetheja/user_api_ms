@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - master
+      - vulnerabilities
   pull_request:
     branches:
       - master
-
+      - vulnerabilities
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
@@ -15,28 +16,19 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node: [14]
 
     steps:
-    
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.1.1
+
       - name: Checkout the code
         uses: actions/checkout@master
-        
-      - name: install the dependencies
-        run: npm install
       
-      - name: install eslint
-        run: npm install eslint
-        
-      - name: install eslint airbnb dependency
-        run: npm install eslint-config-airbnb-base
-
-      - name: install eslint plugin import 
-        run: npm install eslint-plugin-import
-
-      - name: npm audit action
-        uses: oke-py/npm-audit-action@v2.1.0
-      
-      - name: Run lint
-        run: npm run lint
-        
+      - name: audit Test
+        uses: oke-py/npm-audit-action@v2
+        with:
+          audit_level: moderate
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_assignees: oke-py
+          issue_labels: vulnerability,test
+          dedupe_issues: true
