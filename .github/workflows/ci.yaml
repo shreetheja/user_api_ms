@@ -22,18 +22,6 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@master
       
-      - name: Install eslint
-        run: npm install eslint
-        
-      - name: Install eslint Airbnb dependency
-        run: npm install eslint-config-airbnb-base
-
-      - name: Install Eslint plugin import 
-        run: npm install eslint-plugin-import
-      
-      - name: Run lint
-        run: npm run lint
-      
       - name: audit Test
         uses: oke-py/npm-audit-action@v2
         with:
