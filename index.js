@@ -9,6 +9,7 @@ const log = require('./log/index');
 const adminRoute = require('./routes/admin');
 const userRoute = require('./routes/user');
 const { Api500Error } = require('./error_models/apiErrors');
+const { signUserToken, verifyWebToken } = require('./utils/jwt');
 
 const logger = log.getNormalLogger();
 const app = express();
@@ -33,4 +34,6 @@ const server = app.listen(
     logger.info(`UserMS Server is Up and Listening at ${process.env.PORT}👂🏻`);
   },
 );
+console.log(verifyWebToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1SWQiOiJtYWtlIiwiaWF0IjoxNjYzNzg2MDIxfQ.bfJ871y9zb4OoV3sTCDvd7G_N3Yz9YEBtDmUdJtD920'));
+
 server.keepAliveTimeout = 30;

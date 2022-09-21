@@ -1,0 +1,120 @@
+[2022-09-21T18:10:26.567Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:10:26.586Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:10:26 GMT+0000_______________________ 
+[2022-09-21T18:10:26.597Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:10:31.190Z]: [debug]: USER: user trying to login request 
+[2022-09-21T18:10:31.191Z]: [debug]: getting Connection 
+[2022-09-21T18:10:31.556Z]: [debug]: SUccuess Connection 
+[2022-09-21T18:10:31.563Z]: [debug]: Connection Success! 
+Success!: Connection Success!
+    at UserDb.getConnection (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:33:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async UserDb.getUserDetails (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:101:17)
+    at async Controller.verifyUser (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:27:19)
+    at async Controller.login (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:71:22) 
+[2022-09-21T18:23:01.189Z]: [debug]: USER: user trying to login request 
+[2022-09-21T18:23:01.194Z]: [debug]: getting Connection 
+[2022-09-21T18:23:01.196Z]: [debug]: SUccuess Connection 
+[2022-09-21T18:23:01.201Z]: [debug]: Connection Success! 
+Success!: Connection Success!
+    at UserDb.getConnection (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:33:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async UserDb.getUserDetails (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:101:17)
+    at async Controller.verifyUser (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:27:19)
+    at async Controller.login (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:71:22) 
+[2022-09-21T18:23:08.286Z]: [info]: The Payload was Modified payload: JsonWebTokenError: jwt malformed 
+[2022-09-21T18:24:40.465Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:24:40.479Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:24:40 GMT+0000_______________________ 
+[2022-09-21T18:24:40.491Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:24:46.786Z]: [debug]: USER: user trying to login request 
+[2022-09-21T18:24:46.788Z]: [debug]: getting Connection 
+[2022-09-21T18:24:47.031Z]: [debug]: SUccuess Connection 
+[2022-09-21T18:24:47.035Z]: [debug]: Connection Success! 
+Success!: Connection Success!
+    at UserDb.getConnection (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:33:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async UserDb.getUserDetails (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:101:17)
+    at async Controller.verifyUser (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:27:19)
+    at async Controller.login (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:71:22) 
+[2022-09-21T18:25:10.265Z]: [info]: The Payload was Modified payload: JsonWebTokenError: jwt malformed 
+[2022-09-21T18:27:21.217Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:27:21.231Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:27:21 GMT+0000_______________________ 
+[2022-09-21T18:27:21.242Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:27:39.704Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:27:39.724Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:27:39 GMT+0000_______________________ 
+[2022-09-21T18:27:39.737Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:27:47.943Z]: [debug]: Requestd For UID: 4SF18CS144 
+[2022-09-21T18:27:47.948Z]: [info]: The Payload was Modified payload: JsonWebTokenError: jwt malformed 
+[2022-09-21T18:27:47.952Z]: [debug]: Decode Token : JsonWebTokenError: jwt malformed 
+[2022-09-21T18:28:18.939Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:28:18.957Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:28:18 GMT+0000_______________________ 
+[2022-09-21T18:28:18.968Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:28:51.785Z]: [debug]: Auth Header : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1SWQiOiI0U0YxOENTMTQ0IiwiaWF0IjoxNjYzNzg0Njg3fQ.c9_jBn1vd1CgE7MgsBaK21yV71dreudsc3UdrLotVjg 
+[2022-09-21T18:28:51.791Z]: [debug]: Requestd For UID: 4SF18CS144 
+[2022-09-21T18:28:51.799Z]: [info]: The Payload was Modified payload: JsonWebTokenError: jwt malformed 
+[2022-09-21T18:28:51.803Z]: [debug]: Decode Token : JsonWebTokenError: jwt malformed 
+[2022-09-21T18:41:43.469Z]: [debug]: USER: user trying to login request 
+[2022-09-21T18:41:43.474Z]: [debug]: getting Connection 
+[2022-09-21T18:41:43.804Z]: [debug]: SUccuess Connection 
+[2022-09-21T18:41:43.806Z]: [debug]: Connection Success! 
+Success!: Connection Success!
+    at UserDb.getConnection (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:33:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async UserDb.getUserDetails (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:101:17)
+    at async Controller.verifyUser (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:27:19)
+    at async Controller.login (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:71:22) 
+[2022-09-21T18:46:24.223Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:46:24.238Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:46:24 GMT+0000_______________________ 
+[2022-09-21T18:46:24.252Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:46:33.269Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:46:33.285Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:46:33 GMT+0000_______________________ 
+[2022-09-21T18:46:33.297Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:46:50.858Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:46:50.872Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:46:50 GMT+0000_______________________ 
+[2022-09-21T18:46:50.886Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:47:01.754Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:47:01.773Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:47:01 GMT+0000_______________________ 
+[2022-09-21T18:47:01.792Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:49:06.281Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:49:06.296Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:49:06 GMT+0000_______________________ 
+[2022-09-21T18:49:06.312Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:50:12.604Z]: [debug]: USER: user trying to login request 
+[2022-09-21T18:50:12.612Z]: [debug]: getting Connection 
+[2022-09-21T18:50:13.004Z]: [debug]: SUccuess Connection 
+[2022-09-21T18:50:13.015Z]: [debug]: Connection Success! 
+Success!: Connection Success!
+    at UserDb.getConnection (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:33:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async UserDb.getUserDetails (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:101:17)
+    at async Controller.verifyUser (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:27:19)
+    at async Controller.login (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:71:22) 
+[2022-09-21T18:50:27.749Z]: [debug]: Auth Header : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1SWQiOiI0U0YxOENTMTQ0IiwiaWF0IjoxNjYzNzg2MjEzfQ.u5q7lOdNzKcORpdM-t_brnIScDrbshaghXvd7xfhOsU 
+[2022-09-21T18:50:27.753Z]: [debug]: Requestd For UID: 4SF18CS144 
+[2022-09-21T18:50:27.756Z]: [info]: The Payload was Modified payload: JsonWebTokenError: jwt malformed 
+[2022-09-21T18:50:27.759Z]: [debug]: Decode Token : JsonWebTokenError: jwt malformed 
+[2022-09-21T18:51:25.903Z]: [debug]: Auth Header : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1SWQiOiI0U0YxOENTMTQ0IiwiaWF0IjoxNjYzNzg2MjEzfQ.u5q7lOdNzKcORpdM-t_brnIScDrbshaghXvd7xfhOsU 
+[2022-09-21T18:51:25.906Z]: [debug]: Requestd For UID: 4SF18CS144 
+[2022-09-21T18:51:25.908Z]: [info]: The Payload was Modified payload: JsonWebTokenError: jwt malformed 
+[2022-09-21T18:51:25.910Z]: [debug]: Decode Token : JsonWebTokenError: jwt malformed 
+[2022-09-21T18:51:56.173Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:51:56.194Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:51:56 GMT+0000_______________________ 
+[2022-09-21T18:51:56.214Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:51:58.385Z]: [debug]: Auth Header : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1SWQiOiI0U0YxOENTMTQ0IiwiaWF0IjoxNjYzNzg2MjEzfQ.u5q7lOdNzKcORpdM-t_brnIScDrbshaghXvd7xfhOsU 
+[2022-09-21T18:51:58.391Z]: [debug]: e 
+[2022-09-21T18:51:58.395Z]: [debug]: Requestd For UID: 4SF18CS144 
+[2022-09-21T18:51:58.398Z]: [info]: The Payload was Modified payload: JsonWebTokenError: jwt malformed 
+[2022-09-21T18:51:58.402Z]: [debug]: Decode Token : JsonWebTokenError: jwt malformed 
+[2022-09-21T18:52:15.519Z]: [info]: Connecting to Db with:  host: [eduvedha.csoahxingiyb.ap-south-1.rds.amazonaws.com] username: [admin]  dbname: [codepro]  
+[2022-09-21T18:52:15.535Z]: [info]: _________________Restarted at: Wed Sep 21 2022 18:52:15 GMT+0000_______________________ 
+[2022-09-21T18:52:15.552Z]: [info]: UserMS Server is Up and Listening at 8080👂🏻 
+[2022-09-21T18:52:18.550Z]: [debug]: Auth Header : Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1SWQiOiI0U0YxOENTMTQ0IiwiaWF0IjoxNjYzNzg2MjEzfQ.u5q7lOdNzKcORpdM-t_brnIScDrbshaghXvd7xfhOsU 
+[2022-09-21T18:52:18.567Z]: [debug]: getting Connection 
+[2022-09-21T18:52:18.553Z]: [debug]: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1SWQiOiI0U0YxOENTMTQ0IiwiaWF0IjoxNjYzNzg2MjEzfQ.u5q7lOdNzKcORpdM-t_brnIScDrbshaghXvd7xfhOsU 
+[2022-09-21T18:52:18.557Z]: [debug]: Requestd For UID: 4SF18CS144 
+[2022-09-21T18:52:18.562Z]: [debug]: Decode Token : [object Object] 
+[2022-09-21T18:52:18.760Z]: [debug]: SUccuess Connection 
+[2022-09-21T18:52:18.763Z]: [debug]: Connection Success! 
+Success!: Connection Success!
+    at UserDb.getConnection (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:33:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async UserDb.getUserDetails (C:\Users\snsha\Desktop\user_ms\user_api_ms\database\user_database.js:101:17)
+    at async Controller.getUserDetails (C:\Users\snsha\Desktop\user_ms\user_api_ms\api\user_api\controller.js:289:27) 

@@ -5,6 +5,7 @@ const UtilModule = require('../../utils/utils');
 const {
   Api500Error, Api200Success, Api401Error, Api400Error,
 } = require('../../error_models/apiErrors');
+const { signUserToken } = require('../../utils/jwt');
 
 const utils = new UtilModule();
 const db = new UserDb();
@@ -49,7 +50,7 @@ class Controller {
         const responseObj = new Api200Success(
           `USER:${uId} Login Successful `,
           `USER:${uId} Login Succeussful with DB Response :${dbRes}`,
-          true,
+          {},
         );
         return responseObj;
       }
@@ -68,6 +69,9 @@ class Controller {
 
   static async login(req, res) {
     const response = await Controller.verifyUser(req.body.u_id, req.body.password);
+    if (response.statusCode === 200) {
+      response.data.access_code = signUserToken({ uId: req.body.u_id });
+    }
     res.status(response.statusCode).send(response.toStringifiedJson()).end();
   }
 
@@ -281,41 +285,35 @@ class Controller {
 
   static async getUserDetails(req, res) {
     try {
-      const { u_id: uId, password } = req.query;
-      // eslint-disable-next-line no-use-before-define
-      const verifyUserData = await Controller.verifyUser(uId, password);
-      if (verifyUserData.statusCode === 200) {
-        const userDetails = await db.getUserDetails(uId.toUpperCase());
-        if (userDetails.error) {
-          const responseObj = new Api500Error(
-            'internal server error',
-            `db error in route /getUserDetails/:uId/:password : ${userDetails.error} `,
-          );
-          res.status(500).send(responseObj.toStringifiedJson()).end();
-          return;
-        }
-        const data = userDetails.rows[0];
-        const userDetailsToSend = {
-          u_id: data.u_id,
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          created_on: data.created_on,
-          address: data.address,
-          college: data.college,
-          dob: data.dob,
-          emailStatus: data.emailStatus,
-          confirmationCode: data.confirmationCode,
-        };
-        const responseObj = new Api200Success(
-          'data fetched successful',
-          'data fetched successful',
-          userDetailsToSend,
+      const { u_id: uId } = req.query;
+      const userDetails = await db.getUserDetails(uId.toUpperCase());
+      if (userDetails.error) {
+        const responseObj = new Api500Error(
+          'internal server error',
+          `db error in route /getUserDetails/:uId/ : ${userDetails.error} `,
         );
-        res.status(200).send(responseObj.toStringifiedJson()).end();
-      } else {
-        res.status(verifyUserData.statusCode).send(verifyUserData.toStringifiedJson());
+        res.status(500).send(responseObj.toStringifiedJson()).end();
+        return;
       }
+      const data = userDetails.rows[0];
+      const userDetailsToSend = {
+        u_id: data.u_id,
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        created_on: data.created_on,
+        address: data.address,
+        college: data.college,
+        dob: data.dob,
+        emailStatus: data.emailStatus,
+        confirmationCode: data.confirmationCode,
+      };
+      const responseObj = new Api200Success(
+        'data fetched successful',
+        'data fetched successful',
+        userDetailsToSend,
+      );
+      res.status(200).send(responseObj.toStringifiedJson()).end();
     } catch (error) {
       const responseObj = new Api500Error(
         'internal server error',
