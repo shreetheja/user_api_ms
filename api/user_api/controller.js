@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 const { v4: uuidv4 } = require('uuid');
 const log = require('../../log/index');
 const UserDb = require('../../database/user_database');
@@ -6,6 +7,7 @@ const {
   Api500Error, Api200Success, Api401Error, Api400Error,
 } = require('../../error_models/apiErrors');
 const { signUserToken } = require('../../utils/jwt');
+const { send500Api } = require('../trainer_api/controller');
 
 const utils = new UtilModule();
 const db = new UserDb();
@@ -188,7 +190,7 @@ class Controller {
     if (submitDbRes.error) {
       const responseObj = new Api500Error(
         'Internal Server Error',
-        `Database Error was Found in route /user/isUserExists: ${uIdDbRes.error}`,
+        `Database Error was Found in route /user/isUserExists: ${submitDbRes.error}`,
       );
       res.status(500).send(responseObj.toStringifiedJson()).end();
       return;
@@ -208,18 +210,16 @@ class Controller {
 
     const dbResp = await db.getAllCollegeNames();
     if (dbResp.error || dbResp.rows.length === 0) {
-      const responseObj = new Api500Error(
-        'Internal Server Error',
+      send500Api(
+        res,
         `Database Error was Found in route /user/getAllColleges: ${dbResp.error}`,
       );
-      res.status(500).send(responseObj.toStringifiedJson());
     } else if (dbResp) {
       const responseObj = new Api200Success(
         'get successful',
         `getColleges Succuesful with DB Response :${dbResp}`,
         dbResp.rows,
       );
-      res.setTimeout(100);
       res.status(200).send(responseObj.toStringifiedJson());
     }
   }
