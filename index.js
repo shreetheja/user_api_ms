@@ -9,6 +9,7 @@ const log = require('./log/index');
 const adminRoute = require('./routes/admin');
 const userRoute = require('./routes/user');
 const { Api500Error } = require('./error_models/apiErrors');
+const trainerRoute = require('./routes/trainer');
 
 const logger = log.getNormalLogger();
 const app = express();
@@ -19,6 +20,7 @@ logger.info(`_________________Restarted at: ${moment.utc()}_____________________
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin', adminRoute);
 app.use('/user', userRoute);
+app.use('/trainer', trainerRoute);
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {

@@ -1,7 +1,9 @@
+/* eslint-disable import/extensions */
 const { v4: uuidv4 } = require('uuid');
 const log = require('../../log/index');
 const UserDb = require('../../database/user_database');
 const UtilModule = require('../../utils/utils');
+const { signWebToken } = require('../../utils/jwt.js');
 const {
   Api500Error, Api200Success, Api401Error, Api400Error,
 } = require('../../error_models/apiErrors');
@@ -49,7 +51,7 @@ class Controller {
         const responseObj = new Api200Success(
           `USER:${uId} Login Successful `,
           `USER:${uId} Login Succeussful with DB Response :${dbRes}`,
-          true,
+          {},
         );
         return responseObj;
       }
@@ -68,6 +70,15 @@ class Controller {
 
   static async login(req, res) {
     const response = await Controller.verifyUser(req.body.u_id, req.body.password);
+    let jwtToken = null;
+    if (response.statusCode === 200) {
+      const payload = {
+        u_id: req.body.u_id,
+        password: req.body.password,
+      };
+      jwtToken = signWebToken(payload);
+      response.data.access_code = jwtToken;
+    }
     res.status(response.statusCode).send(response.toStringifiedJson()).end();
   }
 
@@ -184,7 +195,7 @@ class Controller {
     if (submitDbRes.error) {
       const responseObj = new Api500Error(
         'Internal Server Error',
-        `Database Error was Found in route /user/isUserExists: ${uIdDbRes.error}`,
+        `Database Error was Found in route /user/isUserExists: ${submitDbRes.error}`,
       );
       res.status(500).send(responseObj.toStringifiedJson()).end();
       return;

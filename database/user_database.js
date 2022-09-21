@@ -141,6 +141,56 @@ class UserDb {
     }
   }
 
+  /**
+   *
+   * @param {String} uId  user Id to Check
+   * @param {String} password password to Check
+   * @returns {DBSuccess} with data
+   */
+  async getTrainerDetails(uId, password = null) {
+    const res = await this.getConnection();
+    let conn;
+    if (!res.error) {
+      conn = res.rows;
+      logger.debug(res);
+    } else {
+      const out = 'Error getting connection to get trainer user login=>';
+      logger.error(`${out} ${uId} error: ${res.error}}`);
+      return res;
+    }
+
+    const q1 = 'select * from trainer where f_id=? and password = ?';
+    const q2 = 'select * from trainer where f_id=?';
+    const query = password ? q1 : q2;
+    const data = password ? [uId, password] : [uId];
+    let rows;
+    try {
+      [rows] = await conn.query(query, data);
+      if (rows.length === 0) {
+        return new DBSuccess(
+          'Query Success',
+          'Selection of Query Success but training user found is zero',
+          conn,
+          rows,
+        );
+      }
+      return new DBSuccess(
+        'Query Success',
+        'Selection of Query Success and training user is found',
+        conn,
+        rows,
+      );
+    } catch (error) {
+      return new DBError(
+        'Select Error',
+        error,
+        conn,
+        DBStatusCodes.SELECT_ERROR,
+        `Selection training user with uid : ${uId} Caused Error`,
+      );
+    }
+  }
+
   async addNewUser(data) {
     const {
       uId,
@@ -369,8 +419,116 @@ class UserDb {
     }
   }
 
+  async isTrainerMailExists(mail) {
+    const res = await this.getConnection();
+    let conn;
+    if (!res.error) {
+      conn = res.rows;
+    } else {
+      const out = 'Error getting connection to get mail details';
+      logger.error(`${out} error: ${res.error}}`);
+      return res;
+    }
+    const query = 'select * from trainer where email = ?';
+    const data = [mail];
+    let rows;
+    try {
+      [rows] = await conn.query(query, data);
+      if (rows.length === 0) {
+        return new DBSuccess(
+          'Query Success',
+          'Selection of Query Success but mail found is Zero',
+          conn,
+          rows,
+        );
+      }
+      return new DBSuccess(
+        'Query Success',
+        'Selection of Query Success and mail is found',
+        conn,
+        rows,
+      );
+    } catch (error) {
+      return new DBError(
+        'Select Error',
+        error,
+        conn,
+        DBStatusCodes.SELECT_ERROR,
+        `Selection mail with mail: ${mail}`,
+      );
+    }
+  }
+
+  async addNewTrainer(data) {
+    const {
+      name,
+      fId,
+      phone,
+      email,
+      dId,
+      password,
+      isEmailConfirmed,
+      code,
+    } = data;
+    const res = await this.getConnection();
+    let conn;
+    if (!res.error) {
+      conn = res.rows;
+    } else {
+      const out = 'Error getting connection to get adding user =>';
+      logger.error(`${out} ${name} error: ${res.error}}`);
+      return res;
+    }
+    await conn.beginTransaction();
+    try {
+      // eslint-disable-next-line max-len
+      const userData = [fId, name, phone, email, dId, password, isEmailConfirmed, code];
+      const userQuery = `insert into user 
+      (f_id,name,phone,email,d_id,password,isEmailConfirmed,code)
+      values(?,?,?,?,?,?,?,?)`;
+      await conn.execute(userQuery, userData);
+      await conn.commit();
+      return new DBSuccess(
+        'Insert Succuessful',
+        `insertion user with uid : ${fId} and name : ${name} succuss`,
+        conn,
+        null,
+      );
+    } catch (error) {
+      conn.rollback();
+      return new DBError(
+        'Insert Error rollback Succuessful',
+        error,
+        conn,
+        DBStatusCodes.INSERT_FAILED,
+        `insertion user with uid : ${fId} and name : ${name} Caused Error`,
+      );
+    }
+  }
+
   async isUserUidExists(uId) {
     const queryRes = await this.getUserDetails(uId);
+    if (queryRes.statusCode !== DBStatusCodes.OK) {
+      return queryRes;
+    }
+    if (queryRes.rows.length === 0) {
+      return new DBSuccess(
+        'Query Success',
+        'Selection of Query Success but user found is zero',
+        null,
+        queryRes.rows,
+      );
+    }
+    return new DBSuccess(
+      'Query Success',
+      'Selection of Query Success and user is found',
+      null,
+      queryRes.rows,
+    );
+  }
+
+  async isTrainerUidExists(uId) {
+    const queryRes = await this.getTrainerDetails(uId);
     if (queryRes.statusCode !== DBStatusCodes.OK) {
       return queryRes;
     }
