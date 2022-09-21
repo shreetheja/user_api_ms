@@ -7,6 +7,7 @@ const { signWebToken } = require('../../utils/jwt.js');
 const {
   Api500Error, Api200Success, Api401Error, Api400Error,
 } = require('../../error_models/apiErrors');
+const { send500Api } = require('../trainer_api/controller');
 
 const utils = new UtilModule();
 const db = new UserDb();
@@ -215,18 +216,16 @@ class Controller {
 
     const dbResp = await db.getAllCollegeNames();
     if (dbResp.error || dbResp.rows.length === 0) {
-      const responseObj = new Api500Error(
-        'Internal Server Error',
+      send500Api(
+        res,
         `Database Error was Found in route /user/getAllColleges: ${dbResp.error}`,
       );
-      res.status(500).send(responseObj.toStringifiedJson());
     } else if (dbResp) {
       const responseObj = new Api200Success(
         'get successful',
         `getColleges Succuesful with DB Response :${dbResp}`,
         dbResp.rows,
       );
-      res.setTimeout(100);
       res.status(200).send(responseObj.toStringifiedJson());
     }
   }
