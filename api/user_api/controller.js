@@ -38,7 +38,7 @@ class Controller {
       const data = dbRes.rows[0];
 
       // is Verified
-      if (data.emailStatus === 'pending') {
+      if (data.emailStatus) {
         const responseObj = new Api401Error(
           `USER:${uId} Login Unsuccessful please verify mail id: ${data.email} `,
           `USER:${uId} Login UnSucceussful with DB Response :${dbRes}`,

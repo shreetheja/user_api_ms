@@ -236,7 +236,8 @@ class UserDb {
       let userQuery = 'insert into user (u_id,name,phone,email,password,address';
       // eslint-disable-next-line max-len
       userQuery
-        += ',college,dob,emailStatus,confirmationCode,created_on) values(?,?,?,?,?,?,?,?,?,?,?)';
+        += `,college,dob,emailStatus,confirmationCode,created_on) 
+        values(?,?,?,?,?,?,?,?,?,?,?)`;
       await conn.execute(userQuery, userData);
 
       const batchData = [bId, uId];
@@ -552,7 +553,7 @@ class UserDb {
         isEmailConfirmed,
         code,
       ];
-      const userQuery = `insert into user 
+      const userQuery = `insert into trainer 
       (f_id,name,phone,email,d_id,password,isEmailConfirmed,code)
       values(?,?,?,?,?,?,?,?)`;
       await conn.execute(userQuery, userData);
@@ -627,7 +628,7 @@ class UserDb {
       logger.error(`${out} error: ${res.error}}`);
       return res;
     }
-    const query = 'update user set emailStatus = "active" where confirmationCode = ?';
+    const query = 'update user set emailStatus = true where confirmationCode = ?';
     const data = [code];
     try {
       await conn.query(query, data);

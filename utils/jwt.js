@@ -37,7 +37,7 @@ function verifyWebToken(token) {
 }
 
 function verifyUserAuthToken(req, res, next) {
-  const authHeader = req.headers.authorization;
+  const authHeader = req.headers.Authorization;
   logger.debug(`Auth Header : ${authHeader}`);
   const token = authHeader && authHeader.split(' ')[1];
   logger.debug(token);

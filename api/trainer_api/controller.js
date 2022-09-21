@@ -8,6 +8,7 @@ const {
   Api400Error,
 } = require('../../error_models/apiErrors');
 const UserDb = require('../../database/user_database');
+const { signTrainerToken } = require('../../utils/jwt');
 
 const db = new UserDb();
 const utils = new UtilModule();
@@ -16,7 +17,8 @@ class TrainerController {
   static async login(req, res) {
     try {
       const { f_id: fId, password } = req.body;
-      if (this.isEmptyOrUndefined([fId, password])) {
+      logger.debug(`FID : ${fId} PASSWORD: ${password}`);
+      if (TrainerController.isEmptyOrUndefined([fId, password])) {
         const responseObj = new Api400Error(
           'TRAINER: bad request missing params ',
           'TRAINER: bad request missing params ',
@@ -25,9 +27,9 @@ class TrainerController {
         return;
       }
       logger.debug('TRAINER: user tying to login request');
-      const dbRes = await db.getTrainerDetails(fId.toUpperCase(), password);
+      const dbRes = await db.getTrainerDetails(fId.toUpperCase());
       if (dbRes.error) {
-        this.send500Api(res, `Db error found : ${dbRes.error}`);
+        TrainerController.send500Api(res, `Db error found : ${dbRes.error}`);
         return;
       }
       if (dbRes.rows <= 0) {
@@ -38,7 +40,7 @@ class TrainerController {
         res.status(400).send(responseObj.toStringifiedJson());
         return;
       }
-      const data = dbRes.raw[0];
+      const data = dbRes.rows[0];
       // is verified
       if (!data.isEmailConfirmed) {
         const responseObj = new Api401Error(
@@ -46,6 +48,7 @@ class TrainerController {
           `TRAINER:${fId} Login UnSucceussful with DB Response :${dbRes}`,
         );
         res.status(400).send(responseObj.toStringifiedJson());
+        return;
       }
 
       // is same passcode
@@ -62,10 +65,11 @@ class TrainerController {
         return;
       }
       // JWT
+      const code = signTrainerToken({ fId });
       const responseObj = new Api200Success(
         'USER: Login Successful ',
         `USER:${fId} Login Succeussful with DB Response :${dbRes}`,
-        {},
+        { access_code: code },
       );
       res.status(200).send(responseObj.toStringifiedJson());
     } catch (error) {
@@ -82,7 +86,8 @@ class TrainerController {
       const {
         name, phone, email, d_id: dId, password, f_id: fId,
       } = req.body;
-      if (this.isEmptyOrUndefined([name, phone, email, dId, password, fId])) {
+      if (TrainerController.isEmptyOrUndefined([
+        name, phone, email, dId, password, fId])) {
         const responseObj = new Api400Error(
           'TRAINER: bad request missing params ',
           'TRAINER: bad request missing params ',
@@ -139,7 +144,7 @@ class TrainerController {
       };
       const submitDbRes = await db.addNewTrainer(data);
       if (submitDbRes.error) {
-        this.send500Api(
+        TrainerController.send500Api(
           res,
           `Database Error was Found in route /trainer/signup: ${submitDbRes.error}`,
         );
@@ -153,7 +158,7 @@ class TrainerController {
       utils.nodeMailCreateConfirmationMail(name, confirmationCode, email);
       res.status(200).send(responseObj.toStringifiedJson()).end();
     } catch (error) {
-      this.send500Api(
+      TrainerController.send500Api(
         res,
         `Database Error was Found in route /trainer/signup: ${error}`,
       );
@@ -166,7 +171,7 @@ class TrainerController {
 
       const dbResp = await db.getAllCollegeNames();
       if (dbResp.error || dbResp.rows.length === 0) {
-        this.send500Api(
+        TrainerController.send500Api(
           res,
           `Database Error was Found in route /user/getAllColleges: ${dbResp.error}`,
         );
@@ -180,7 +185,7 @@ class TrainerController {
         res.status(200).send(responseObj.toStringifiedJson());
       }
     } catch (error) {
-      this.send500Api(
+      TrainerController.send500Api(
         res,
         `Database Error was Found in route /trainer/signup: ${error}`,
       );
@@ -207,6 +212,7 @@ class TrainerController {
   }
 
   static isEmptyOrUndefined(params) {
+    console.log(params);
     let returnType = false;
     params.forEach((ele) => {
       if (!ele || ele === '') {
