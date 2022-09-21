@@ -187,27 +187,42 @@ class TrainerController {
     } catch (error) {
       TrainerController.send500Api(
         res,
-        `Database Error was Found in route /trainer/signup: ${error}`,
+        `Database Error was Found in route /trainer/getAllCollegesForTrainer: ${error}`,
       );
     }
   }
 
   static async getAllDeptNames(req, res) {
-    const { c_id: cId } = req.query;
-    const dbResp = await db.getAllDeptNames(cId);
-    if (dbResp.error || dbResp.rows.length === 0) {
-      const responseObj = new Api500Error(
-        'Internal Server Error',
-        `Database Error was Found in route /user/getAllDeptNames: ${dbResp.error}`,
+    try {
+      const { c_id: cId } = req.query;
+      if (TrainerController.isEmptyOrUndefined([cId])) {
+        const responseObj = new Api400Error(
+          'TRAINER: bad request missing params ',
+          'TRAINER: bad request missing params ',
+        );
+        res.status(400).send(responseObj.toStringifiedJson());
+        return;
+      }
+      const dbResp = await db.getAllDeptNames(cId);
+      if (dbResp.error || dbResp.rows.length === 0) {
+        const responseObj = new Api500Error(
+          'Internal Server Error',
+          `Database Error was Found in route /user/getAllDeptNames: ${dbResp.error}`,
+        );
+        res.status(500).send(responseObj.toStringifiedJson()).end();
+      } else if (dbResp) {
+        const responseObj = new Api200Success(
+          'get successful',
+          `getAllDeptNames Succuesful with DB Response :${dbResp}`,
+          dbResp.rows,
+        );
+        res.status(200).send(responseObj.toStringifiedJson()).end();
+      }
+    } catch (error) {
+      TrainerController.send500Api(
+        res,
+        `Database Error was Found in route /trainer/getAllDeptNames: ${error}`,
       );
-      res.status(500).send(responseObj.toStringifiedJson()).end();
-    } else if (dbResp) {
-      const responseObj = new Api200Success(
-        'get successful',
-        `getAllDeptNames Succuesful with DB Response :${dbResp}`,
-        dbResp.rows,
-      );
-      res.status(200).send(responseObj.toStringifiedJson()).end();
     }
   }
 
