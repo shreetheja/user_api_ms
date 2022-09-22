@@ -56,10 +56,15 @@ function Utils() {
   };
 
   // eslint-disable-next-line no-return-await
-  this.validateMail = async (email) => {
+  this.deepValidateMail = async (email) => {
     const validation = await emailValidator.validate(email);
     return validation.valid;
   };
-}
 
+  this.validateMail = (value) => String(value)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+    );
+}
 module.exports = Utils;

@@ -193,6 +193,50 @@ class UserDb {
     }
   }
 
+  async getTrainerDetailsWithEmail(email, password = null) {
+    const res = await this.getConnection();
+    let conn;
+    if (!res.error) {
+      conn = res.rows;
+      logger.debug(res);
+    } else {
+      const out = 'Error getting connection to get trainer user login=>';
+      logger.error(`${out} ${email} error: ${res.error}}`);
+      return res;
+    }
+
+    const q1 = 'select * from trainer where email=? and password = ?';
+    const q2 = 'select * from trainer where email=?';
+    const query = password ? q1 : q2;
+    const data = password ? [email, password] : [email];
+    let rows;
+    try {
+      [rows] = await conn.query(query, data);
+      if (rows.length === 0) {
+        return new DBSuccess(
+          'Query Success',
+          'Selection of Query Success but training user found is zero',
+          conn,
+          rows,
+        );
+      }
+      return new DBSuccess(
+        'Query Success',
+        'Selection of Query Success and training user is found',
+        conn,
+        rows,
+      );
+    } catch (error) {
+      return new DBError(
+        'Select Error',
+        error,
+        conn,
+        DBStatusCodes.SELECT_ERROR,
+        `Selection training user with uid : ${email} Caused Error`,
+      );
+    }
+  }
+
   async addNewUser(data) {
     const {
       uId,

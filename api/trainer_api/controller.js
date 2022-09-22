@@ -16,9 +16,9 @@ const logger = log.getNormalLogger();
 class TrainerController {
   static async login(req, res) {
     try {
-      const { f_id: fId, password } = req.body;
-      logger.debug(`FID : ${fId} PASSWORD: ${password}`);
-      if (TrainerController.isEmptyOrUndefined([fId, password])) {
+      const { identity, password } = req.body;
+      logger.debug(`Identity : ${identity} PASSWORD: ${password}`);
+      if (TrainerController.isEmptyOrUndefined([identity, password])) {
         const responseObj = new Api400Error(
           'TRAINER: bad request missing params ',
           'TRAINER: bad request missing params ',
@@ -27,7 +27,12 @@ class TrainerController {
         return;
       }
       logger.debug('TRAINER: user tying to login request');
-      const dbRes = await db.getTrainerDetails(fId.toUpperCase());
+      let dbRes = null;
+      if (utils.validateMail(identity)) {
+        dbRes = await db.getTrainerDetailsWithEmail(identity);
+      } else {
+        dbRes = await db.getTrainerDetails(identity.toUpperCase());
+      }
       if (dbRes.error) {
         TrainerController.send500Api(res, `Db error found : ${dbRes.error}`);
         return;
@@ -35,7 +40,7 @@ class TrainerController {
       if (dbRes.rows <= 0) {
         const responseObj = new Api400Error(
           'TRAINER: User not found',
-          `TRAINER: User with ${fId} not found `,
+          `TRAINER: User with ${identity} not found `,
         );
         res.status(400).send(responseObj.toStringifiedJson());
         return;
@@ -45,7 +50,7 @@ class TrainerController {
       if (!data.isEmailConfirmed) {
         const responseObj = new Api401Error(
           `TRAINER:Login Unsuccessful please verify mail id: ${data.email} `,
-          `TRAINER:${fId} Login UnSucceussful with DB Response :${dbRes}`,
+          `TRAINER:${identity} Login UnSucceussful with DB Response :${dbRes}`,
         );
         res.status(400).send(responseObj.toStringifiedJson());
         return;
@@ -65,10 +70,10 @@ class TrainerController {
         return;
       }
       // JWT
-      const code = signTrainerToken({ fId });
+      const code = signTrainerToken({ fId: identity });
       const responseObj = new Api200Success(
         'USER: Login Successful ',
-        `USER:${fId} Login Succeussful with DB Response :${dbRes}`,
+        `USER:${identity} Login Succeussful with DB Response :${dbRes}`,
         { access_code: code },
       );
       res.status(200).send(responseObj.toStringifiedJson());
