@@ -7,10 +7,10 @@ const {
   Api401Error,
   Api400Error,
 } = require('../../error_models/apiErrors');
-const UserDb = require('../../database/user_database');
+const TrainerDb = require('../../database/trainer_database');
 const { signTrainerToken } = require('../../utils/jwt');
 
-const db = new UserDb();
+const db = new TrainerDb();
 const utils = new UtilModule();
 const logger = log.getNormalLogger();
 class TrainerController {
@@ -100,7 +100,7 @@ class TrainerController {
         res.status(400).send(responseObj.toStringifiedJson());
         return;
       }
-      const dbEmailResp = await db.isUserMailExists(email);
+      const dbEmailResp = await db.isTrainerMailExists(email);
       if (dbEmailResp.error) {
         const responseObj = new Api500Error(
           'Internal Server Error',
@@ -174,11 +174,11 @@ class TrainerController {
     try {
       logger.info('Getting all Colleges details ');
 
-      const dbResp = await db.getAllCollegeNames();
+      const dbResp = await db.getAllCollegesForTrainer();
       if (dbResp.error || dbResp.rows.length === 0) {
         TrainerController.send500Api(
           res,
-          `Database Error was Found in route /user/getAllColleges: ${dbResp.error}`,
+          `Database Error was Found in route /trainer/getAllCollegesForTrainer: ${dbResp.error}`,
         );
         return;
       } if (dbResp) {
