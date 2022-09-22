@@ -70,7 +70,7 @@ class TrainerController {
         return;
       }
       // JWT
-      const code = signTrainerToken({ fId: identity });
+      const code = signTrainerToken({ identity });
       const responseObj = new Api200Success(
         'USER: Login Successful ',
         `USER:${identity} Login Succeussful with DB Response :${dbRes}`,
@@ -178,7 +178,8 @@ class TrainerController {
       if (dbResp.error || dbResp.rows.length === 0) {
         TrainerController.send500Api(
           res,
-          `Database Error was Found in route /trainer/getAllCollegesForTrainer: ${dbResp.error}`,
+          `Database Error was Found in route /trainer/getAllCollegesForTrainer: 
+          ${dbResp.error}`,
         );
         return;
       } if (dbResp) {
@@ -228,6 +229,46 @@ class TrainerController {
         res,
         `Database Error was Found in route /trainer/getAllDeptNames: ${error}`,
       );
+    }
+  }
+
+  static async getTrainerDetails(req, res) {
+    try {
+      const { f_id: fId } = req.query;
+      const trainerDetails = await db.getTrainerDetails(fId.toUpperCase());
+      if (trainerDetails.error) {
+        const responseObj = new Api500Error(
+          'internal server error',
+          `db error in route /getTrainerDetails/:fId/ : ${trainerDetails.error} `,
+        );
+        res.status(500).send(responseObj.toStringifiedJson()).end();
+        return;
+      }
+      const data = trainerDetails.rows[0];
+      const trainerDetailsToSend = {
+        f_id: data.f_id,
+        name: data.name,
+        phone: data.phone,
+        email: data.email,
+        created_on: data.created_on,
+        address: data.address,
+        college: data.college,
+        dob: data.dob,
+        emailStatus: data.emailStatus,
+        confirmationCode: data.confirmationCode,
+      };
+      const responseObj = new Api200Success(
+        'data fetched successful',
+        'data fetched successful',
+        trainerDetailsToSend,
+      );
+      res.status(200).send(responseObj.toStringifiedJson()).end();
+    } catch (error) {
+      const responseObj = new Api500Error(
+        'internal server error',
+        `internal server error ${error.toString()}`,
+      );
+      res.status(500).send(responseObj.toStringifiedJson());
     }
   }
 

@@ -10,9 +10,9 @@ const {
 } = require('../error_models/apiErrors');
 
 function signTrainerToken(payload) {
-  if (!payload.fId) {
+  if (!payload.identity) {
     logger.error(`The Required Payload not Found : values passed
-    f_id: ${payload.fId}`);
+    identity: ${payload.identity}`);
     return null;
   }
   return jwt.sign(payload, secret);
@@ -21,7 +21,7 @@ function signTrainerToken(payload) {
 function signUserToken(payload) {
   if (!payload.uId) {
     logger.error(`The Required Payload not Found : values passed
-    f_id: ${payload.uId}`);
+    u_id: ${payload.uId}`);
     return null;
   }
   return jwt.sign(payload, secret);
@@ -37,7 +37,8 @@ function verifyWebToken(token) {
 }
 
 function verifyUserAuthToken(req, res, next) {
-  const authHeader = req.headers.Authorization;
+  console.log(req);
+  const authHeader = req.headers.authorization;
   logger.debug(`Auth Header : ${authHeader}`);
   const token = authHeader && authHeader.split(' ')[1];
   logger.debug(token);
@@ -63,7 +64,7 @@ function verifyTrainerAuthToken(req, res, next) {
   const token = authHeader && authHeader.split('')[1];
   if (token == null) return res.sendStatus(401);
   const decodedToken = verifyWebToken(token);
-  const requestedForFid = req.query.f_id || req.body.f_id;
+  const requestedForFid = req.query.identity || req.body.identity;
   if (!decodedToken || decodedToken.fId !== requestedForFid) {
     const responseObj = new Api401Error(
       'Login Unsuccessful ',

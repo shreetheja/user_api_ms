@@ -6,6 +6,27 @@ const log = require('../log/index');
 const logger = log.getNormalLogger();
 // eslint-disable-next-line no-unused-vars
 class TrainerDb {
+  async getConnection() {
+    try {
+      logger.debug('getting Connection');
+      const conn = await this.pool.promise().getConnection();
+      logger.debug('SUccuess Connection');
+      return new DBSuccess('Success!', 'Connection Success!', null, conn);
+    } catch (err) {
+      logger.debug('nop Connection');
+      logger.error('Connection Failed error', err);
+      return {
+        error: new DBError(
+          'Connection Failed!',
+          err,
+          null,
+          DBStatusCodes.CONN_FAILED,
+          'Connection failed',
+        ),
+      };
+    }
+  }
+
   constructor() {
     this.dbHost = process.env.MYSQL_DB_HOST;
     this.username = process.env.MYSQL_DB_USERNAME;
@@ -315,6 +336,46 @@ class TrainerDb {
         conn,
         DBStatusCodes.INSERT_FAILED,
         `insertion user with uid : ${fId} and name : ${name} Caused Error`,
+      );
+    }
+  }
+
+  async getCollegeDetails(cId) {
+    const res = await this.getConnection();
+    let conn;
+    if (!res.error) {
+      conn = res.rows;
+    } else {
+      const out = 'Error getting connection to get batches';
+      logger.error(`${out} error: ${res.error}}`);
+      return res;
+    }
+    const query = 'select * from college where c_id = ?';
+    const data = [cId];
+    let rows;
+    try {
+      [rows] = await conn.query(query, data);
+      if (rows.length === 0) {
+        return new DBSuccess(
+          'Query Success',
+          'Selection of Query Success but colleges found is zero',
+          conn,
+          rows,
+        );
+      }
+      return new DBSuccess(
+        'Query Success',
+        'Selection of Query Success and college is found',
+        conn,
+        rows,
+      );
+    } catch (error) {
+      return new DBError(
+        'Select Error',
+        error,
+        conn,
+        DBStatusCodes.SELECT_ERROR,
+        `Selection college with c_id: ${cId}`,
       );
     }
   }
