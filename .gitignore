@@ -1,4 +1,4 @@
 node_modules
-log\logs\api\*
-log\logs\error\*
-log\logs\normal\*
+log/logs/api/*
+log/logs/error/*
+log/logs/normal/*
