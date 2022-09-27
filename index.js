@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(cors());
 logger.info(`_________________Restarted at: ${moment.utc()}_______________________`);
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/', (req, res) => { res.send('I am Working Fine 👍⛈️'); });
 app.use('/admin', adminRoute);
 app.use('/user', userRoute);
 app.use('/trainer', trainerRoute);
